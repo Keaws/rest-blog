@@ -227,3 +227,21 @@ function sendError(res, code, text) {
 		error: text
 	});
 }
+
+function updatePost(req, res, store) {
+	var id = +req.params.id;
+	store.updatePost(id, req.body, function(err, post) {
+		if (err) {
+			res.status(400);
+			res.json(err);
+			return;
+		} 
+
+		if (post === null) {
+			sendError(res, 404, 'Could not find post id ' + id);
+			return;
+		}
+
+		res.json(post);
+	});
+}
